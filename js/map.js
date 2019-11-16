@@ -31,13 +31,21 @@ class Map {
 
     drawMap(data) {
 
-        let scalex = d3.scaleLinear()
-            .domain([1, 10])
-            .rangeRound([600, 860]);
+        let selected = document.getElementById('year').value;
+        let fatalities = data.map(s => {return parseInt(s[selected])});
+        let ids = data.map(s => {return `s${s.ID}`});
+        let states = {};
+        ids.forEach((id, i) => states[id] = fatalities[i]);
 
-        let colorScale = d3.scaleThreshold()
-            .domain(d3.range(d3.max(data)))
+        console.log(states);
+
+        let colorScale = d3.scaleOrdinal()
+            .domain([d3.min(fatalities), d3.max(fatalities)])
             .range(d3.schemeReds[9]);
+
+        // let colorScale = d3.scaleQuantize()
+        //     .domain([d3.min(fatalities),d3.max(fatalities)])
+        //     .range(["#1e99be", "#2b8cbe","#3138bd", "#0a0fc2", "#020053"])
 
         let map = d3.select("#map")
             .attr('width', 960)
@@ -50,16 +58,22 @@ class Map {
                 map.append("g")
                     .attr("class", 'states')
                     .selectAll("path")
-                    // .attr('id', topojson.feature(us, us.object.states.id))
                     .data(topojson.feature(us, us.objects.states).features)
                     .enter().append("path")
+                    .attr("fill", function(d) { return colorScale(states[`s${d.id}`]); })
                     .attr('id', function(d) {return `s${d.id}`})
-                    .attr("d", path);
+                    .attr("d", path)
+
+                    .on('click', function(d) {
+                        console.log(`s${d.id}`);
+                    })
+                ;
 
                 map.append("path")
                     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
                     .attr("class", "state-borders")
-                    .attr("d", path);
+                    .attr("d", path)
+                ;
             })
 
 

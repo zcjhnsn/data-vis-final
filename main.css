@@ -1,5 +1,5 @@
 .states :hover {
-    fill: red;
+    opacity: 0.5;
 }
 
 .state-borders {

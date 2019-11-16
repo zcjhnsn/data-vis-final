@@ -27,11 +27,8 @@
     <div>
         <div id="plot-selector">
             <label>Year:</label>
-            <select id="dataset" onchange="chooseData()">
-                <option selected value="attendance">Attendance</option>
-                <option value="teams">Teams</option>
-                <option value="matches">Matches</option>
-                <option value="goals">Goals</option>
+            <select id="year">
+                <option selected>2017</option>
             </select>
         </div>
         <svg id="map"></svg>
@@ -41,6 +38,15 @@
 
 </div>
 
+<script>
+    let year = 1994;
+    let till = 2017;
+    let options = "";
+    for(let y = till; y >= year; y--){
+        options += "<option>"+ y +"</option>";
+    }
+    document.getElementById("year").innerHTML = options;
+</script>
 
 
 </body>
