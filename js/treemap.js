@@ -1,137 +1,202 @@
-class TreeMap{
+class TreeMap {
 
-    constructor(){
+    constructor() {
 
     }
 
-    drawTreeMap(data){
+    drawTreeMap(data) {
 
         let title = data[0]["YEAR"];
         let state = data[0]["STATE"];
-        for(let i = 100; i < data.length; i+=100) {
+        for (let i = 100; i < data.length; i += 100) {
             if (data[i]["STATE"] != state) {
                 title = "Total";
                 break;
             }
         }
-        let dataTree = this.generateTree(data);
-        console.log(dataTree);
+
+        // let format = d3.formatLocal({
+        //     'groupings': [3],
+        // })
+        var width = 500, height = 500;
+
+        var svg = d3.select("#treeMap")
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height);
 
 
-        new d3.treemap()
-            .data(data)
-            .groupBy(["MONTH", "DAY_WEEK", "HOUR"])
-            .sum("FATALS")
-            .render();
+        // Add, remove or change the key values to change the hierarchy.
+        var nested_data = d3.nest()
+        //.key(d => d.YEAR)
+            .key(function (d) {
+                return d.MONTH;
+            })
+            .key(function (d) {
+                return d.DAY_WEEK;
+            })
+            .key(function (d) {
+                return d.HOUR;
+            })
+            //.rollup(function(leaves) { return {"length": leaves.length, "total_fatal": d3.sum(leaves, function(d) {return parseInt(d.FATALS);})} })
+            .rollup(function (d) {
+                return d3.sum(d, function (d) {
+                    return d.FATALS;
+                });
+            })
+            .entries(data);
+        console.log("nested data: ", nested_data);
 
-        var treeMapLayout = d3.treemap();
-
-        treeMapLayout.size(500,500)
-            .paddingOuter(10);
-
-        treeMapLayout(dataTree);
-
-        let treeMap = d3.select('#treeMap')
-            .append('g')
-            .append('rect');
-
-        treeMap.selectAll('rect')
-            .data(() => root.descendents().deaths/root.descendents().persons)
-            .enter()
-            .append('rect')
-            .attr('x', (d) => d.x0)
-            .attr('y', (d) => d.y0)
-            .attr('width', (d) => d.x1-d.x0)
-            .attr("height", (d) => d.y1-d.y2);
-
-         console.log(dataTree)
-
-    }
+        // var format = d3.formatLocale({
+        //     decimal: ".",
+        //     thousands: ",",
+        //     grouping: [3],
+        //     fatals: ["Fatalities", ""]
+        // }).format("$,d");
 
 
+        var treemap = d3.treemap()
+            .size([width, height])
+            .padding(1)
+            .round(true);
 
-    generateTree(data){
-        let root = new TreeNode(0, 0, null, 'root');
-        for(let i = 0; i < 12; i++){
-            let month = new TreeNode(0, 0, root.id, `m${i}`);
-            for(let j = 0; j < 7; j++){
-                let day = new TreeNode(0, 0, month.id, `d${i}`);
-                for(let k = 0; k <= 24; k++){
-                    day.descendents.push(new TreeNode(0, 0, day.id, `h${i}`))
-                }
-                month.descendents.push(day);
-            }
-            root.descendents.push(month);
-        }
-        let badData = 0;
+        d3.csv("data/ACCIDENT.csv", type, function (error, data) {
+            //console.log(error);
 
-
-        data.forEach(item => {
-            if (parseInt(item["MONTH"]) !== 99 && parseInt(item["DAY_WEEK"]) !== 9) {
-                let deaths = parseInt(item["FATALS"]);
-                let persons = parseInt(item["PERSONS"]);
-
-                root.deaths += deaths;
-                root.total += persons;
-
-                root.descendents[parseInt(item["MONTH"]) - 1].deaths += deaths;
-                root.descendents[parseInt(item["MONTH"]) - 1].total += persons;
-
-                //console.log(item);
-                root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].deaths += deaths;
-                root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].total += persons;
-
-                if (parseInt(item["HOUR"]) >= 0 && parseInt(item["HOUR"]) < 24) {
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[parseInt(item["HOUR"])].deaths += deaths;
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[parseInt(item["HOUR"])].total += persons;
-                } else if(parseInt(item["HOUR"]) === 24) {
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[0].deaths += deaths;
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[0].total += persons;
-                } else {
-                    //24 is an unknown time of day the accident took place.
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[24].deaths += deaths;
-                    root.descendents[parseInt(item["MONTH"]) - 1].descendents[parseInt(item["DAY_WEEK"]) - 1].descendents[24].total += persons;
-                }
-
-
-            } else { badData++; }
+            //     var root = d3.hierarchy({values: nested_data.entries(data)}, function(d) { return d.values; })
+            //         .sum(function(d) { return d.value; })
+            //         .sort(function(a, b) { return b.value - a.value; });
+            //
+            //     treemap(root);
+            //
+            //     var node = d3.select("#treeMap")
+            //         .selectAll(".node")
+            //         .data(root.leaves())
+            //         .enter().append("div")
+            //         .attr("class", "node")
+            //         .style("left", function(d) { return d.x0 + "px"; })
+            //         .style("top", function(d) { return d.y0 + "px"; })
+            //         .style("width", function(d) { return d.x1 - d.x0 + "px"; })
+            //         .style("height", function(d) { return d.y1 - d.y0 + "px"; });
+            //
+            //     node.append("div")
+            //         .attr("class", "node-label")
+            //         .text(function(d) { d.data.key; });
+            //
+            //     node.append("div")
+            //         .attr("class", "node-value")
+            //         .text(function(d) { return parseInt(d.value); });
+            // });
+            if (error) throw error;
+            var root = stratify(data)
+                .sum(function (d) {
+                    return d.value;
+                })
+                .sort(function (a, b) {
+                    return b.height - a.height || b.value - a.value;
+                });
+            treemap(root);
+            var cell = svg
+                .selectAll(".node")
+                .data(root.descendants())
+                .enter().append("g")
+                .attr("transform", function (d) {
+                    return "translate(" + d.x0 + "," + d.y0 + ")";
+                })
+                .attr("class", "node")
+                .each(function (d) {
+                    d.node = this;
+                })
+                // .on("mouseover", hovered(true))
+                // .on("mouseout", hovered(false));
+            cell.append("rect")
+                .attr("id", function (d) {
+                    return "rect-" + d.id;
+                })
+                .attr("width", function (d) {
+                    return d.x1 - d.x0;
+                })
+                .attr("height", function (d) {
+                    return d.y1 - d.y0;
+                })
+                .style("fill", function (d) {
+                    return color(d.depth);
+                });
+            cell.append("clipPath")
+                .attr("id", function (d) {
+                    return "clip-" + d.id;
+                })
+                .append("use")
+                .attr("xlink:href", function (d) {
+                    return "#rect-" + d.id + "";
+                });
+            var label = cell.append("text")
+                .attr("clip-path", function (d) {
+                    return "url(#clip-" + d.id + ")";
+                });
+            label
+                .filter(function (d) {
+                    return d.children;
+                })
+                .selectAll("tspan")
+                .data(function (d) {
+                    return d.id.substring(d.id.lastIndexOf(".") + 1).split(/(?=[A-Z][^A-Z])/g).concat("\xa0" + format(d.value));
+                })
+                .enter().append("tspan")
+                .attr("x", function (d, i) {
+                    return i ? null : 4;
+                })
+                .attr("y", 13)
+                .text(function (d) {
+                    return d;
+                });
+            label
+                .filter(function (d) {
+                    return !d.children;
+                })
+                .selectAll("tspan")
+                .data(function (d) {
+                    return d.id.substring(d.id.lastIndexOf(".") + 1).split(/(?=[A-Z][^A-Z])/g).concat(format(d.value));
+                })
+                .enter().append("tspan")
+                .attr("x", 4)
+                .attr("y", function (d, i) {
+                    return 13 + i * 10;
+                })
+                .text(function (d) {
+                    return d;
+                });
+            cell.append("title")
+                .text(function (d) {
+                    return d.id + "\n" + format(d.value);
+                });
         });
-        console.log(root);
+        //
+        // function hovered(hover) {
+        //     return function (d) {
+        //         d3.selectAll(d.ancestors().map(function (d) {
+        //             return d.node;
+        //         }))
+        //             .classed("node--hover", hover)
+        //             .select("rect")
+        //             .attr("width", function (d) {
+        //                 return d.x1 - d.x0 - hover;
+        //             })
+        //             .attr("height", function (d) {
+        //                 return d.y1 - d.y0 - hover;
+        //             });
+        //     };
 
 
-        // let returnRoot = new CustomTreeNode(root.deaths/root.total, null);
-        // root.descendents.forEach(i =>{
-        //     let month = new CustomTreeNode(i.deaths/i.total, returnRoot);
-        //     i.descendents.forEach(j => {
-        //         let day = new CustomTreeNode(j.deaths/j.total, month);
-        //         j.descendents.forEach(k => {
-        //             day.descendents.push(new CustomTreeNode(k.deaths/k.total, day))
-        //         });
-        //         month.descendents.push(day);
-        //     });
-        //     root.descendents.push(month);
-        // });
-        //console.log(`return root: ${returnRoot}`);
-        return root;
-    }
 
-
-}
-
-class TreeNode {
-    constructor(deaths, total, parent, name) {
-        this.deaths = deaths;
-        this.total = total;
-        this.data =
-        this.parent = parent;
-        this.descendents = [];
-        this.id = name;
-    }
-}
-class CustomTreeNode {
-    constructor(data, parent) {
-        this.data = data;
-        this.parent = parent;
-        this.descendents = [];
+       // }
+        function type(d) {
+            d['FATALS'] = +d.FATALS;
+            d["PERSONS"] = +d.PERSONS;
+            d['MONTH'] = +d.MONTH;
+            d['HOUR'] = +d.HOUR;
+            d['DAY_WEEK'] = +d.DAY_WEEK;
+            return d;
+        }
     }
 }
