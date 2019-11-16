@@ -57,6 +57,7 @@ class StateMap {
      * Adapted from https://bl.ocks.org/adamjanes/6cf85a4fd79e122695ebde7d41fe327f
      */
 
+
     drawMap() {
         let year = document.getElementById('year').value;
         let total = 0;
@@ -75,6 +76,10 @@ class StateMap {
         let colorScale = d3.scaleSequential()
             .domain([d3.min(fatalities), d3.max(fatalities)])
             .interpolator(d3.interpolateReds);
+
+        // let colorScale = d3.scaleQuantize()
+        //     .domain([d3.min(fatalities),d3.max(fatalities)])
+        //     .range(["#1e99be", "#2b8cbe","#3138bd", "#0a0fc2", "#020053"])
 
         let map = d3.select("#map")
             .attr('width', 960)
@@ -151,6 +156,7 @@ class StateMap {
                     .selectAll("path")
                     .data(topojson.feature(us, us.objects.states).features)
                     .enter().append("path")
+
                     .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
                     .attr('id', function(d) {
                         return `s${parseInt(d.id)}`
@@ -168,6 +174,7 @@ class StateMap {
                     })
                     .on('mousemove', (d) => {
                         this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
+
                     })
                 ;
 
