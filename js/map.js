@@ -15,6 +15,155 @@ class StateMap {
 
     }
 
+    drawState(id) {
+        // var width = 960,
+        //     height = 500,
+        //     centered;
+        //
+        // var projection =  d3.geoAlbersUsa()
+        //     .scale(1370)
+        //     .translate([width / 2, height / 2]);
+        //
+        // var path = d3.geoPath()
+        //     .projection(projection);
+        //
+        // var svg = d3.select("#stateMap")
+        //     .attr("width", width)
+        //     .attr("height", height);
+        //
+        //
+        // d3.json("https://d3js.org/us-10m.v1.json")
+        //     .then((json) => {
+        //     console.log(json);
+        //
+        //
+        //     svg.append('g')
+        //         .selectAll("path")
+        //         .attr("id", d => {return d.State})
+        //         .data(topojson.feature(json, json.objects.states).features.filter(function(d) { return `s${d.id}` === id; }))
+        //         .enter()
+        //         .append("path")
+        //         .attr("d", path)
+        //         .attr("class", 'states');
+        //
+        //
+        //
+        // });
+
+        // var width = 960,
+        //     height = 500;
+        //
+        // var projection = d3.geoAlbersUsa();
+        //
+        // /*
+        // var projection = d3.geo.transverseMercator()
+        //           .rotate([120 + 30 / 60, -38 - 50 / 60])
+        //
+        // */
+        //
+        // var path = d3.geoPath()
+        //     .projection(projection);
+        //
+        // var svg = d3.select("#stateMap")
+        //     .attr("width", width)
+        //     .attr("height", height);
+        // d3.json("https://d3js.org/us-10m.v1.json")
+        //     .then(us => {
+        //
+        //         var states = topojson.feature(us, us.objects.states),
+        //             state = states.features.filter(function (d) {
+        //                 return `s${d.id}` === id;
+        //             })[0];
+        //
+        //         projection.scale(1)
+        //             .translate([0, 0]);
+        //
+        //         var b = path.bounds(state),
+        //             s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+        //             t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+        //
+        //         projection.scale(s)
+        //             .translate(t);
+        //
+        //
+        //         // svg.append("path")
+        //         //     .datum(topojson.mesh(us, us.objects.states, function (a, b) {
+        //         //         return a !== b;
+        //         //     }))
+        //         //     .attr("class", "mesh")
+        //         //     .attr("d", path);
+        //
+        //         svg.append("path")
+        //             .datum(state)
+        //             .attr("class", "outline")
+        //             .attr("d", path)
+        //             .attr('id', 'land');
+        //
+        //         svg.append("clipPath")
+        //             .attr("id", "clip-land")
+        //             .append("use")
+        //             .attr("xlink:href", "#land");
+        //
+        //         svg.selectAll("path")
+        //             .data(topojson.feature(us, us.objects.counties).features)
+        //             .enter().append("path")
+        //             .attr("d", path)
+        //             .attr('county-id', function (d) {
+        //                 return d.State;
+        //             }).attr("clip-path", "url(#clip-land)")
+        //             .attr('class', 'county');
+        //
+        //     });
+
+
+        // let map = d3.select("#stateMap")
+        //     .attr('width', 860)
+        //     .attr('height', 500)
+        // ;
+        // let path = d3.geoPath();
+        // d3.json("https://d3js.org/us-10m.v1.json")
+        //     .then((us) => {
+        //         let states = topojson.feature(us, us.objects.states).features;
+        //         let state = states.filter(function (d) {
+        //                 return `s${d.id}` === id;
+        //             })[0];
+        //         console.log(state);
+        //         map.append("g")
+        //             .attr("class", 'states')
+        //             .selectAll("path")
+        //             .data(state)
+        //             .enter().append("path")
+        //
+        //             // .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
+        //             .attr('id', function(d) {
+        //                 return `s${parseInt(d.id)}`
+        //             })
+        //             .attr("d", path)
+        //
+        //             // .on('click', (d) => {
+        //             //     console.log(`s${parseInt(d.id)}`);
+        //             //     this.drawState(`s${parseInt(d.id)}`)
+        //             // })
+        //             // .on('mouseover', (d) => {
+        //             //     this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
+        //             // })
+        //             // .on('mouseout', (d) => {
+        //             //     this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
+        //             // })
+        //             // .on('mousemove', (d) => {
+        //             //     this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
+        //             //
+        //             // })
+        //         ;
+        //
+        //         map.append("path")
+        //             .datum(topojson.mesh(us, state, function(a, b) { return a !== b; }))
+        //             .attr("class", "state-borders")
+        //             .attr("d", path)
+        //         ;
+        //     })
+    }
+
 
     updateMap(year) {
         let total = 0;
@@ -37,8 +186,9 @@ class StateMap {
         d3.select('.states')
             .selectAll('path')
             .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-            .on('click', function(d) {
+            .on('click', (d) => {
                 console.log(`s${parseInt(d.id)}`);
+                this.drawState(`s${parseInt(d.id)}`)
             })
             .on('mouseover', (d) => {
                 this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
@@ -163,8 +313,9 @@ class StateMap {
                     })
                     .attr("d", path)
 
-                    .on('click', function(d) {
+                    .on('click', (d) => {
                         console.log(`s${parseInt(d.id)}`);
+                        this.drawState(`s${parseInt(d.id)}`)
                     })
                     .on('mouseover', (d) => {
                         this.tooltip.mouseover(states[`s${parseInt(d.id)}`])

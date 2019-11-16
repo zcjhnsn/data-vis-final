@@ -24,11 +24,18 @@ function init() {
     Promise.all([
         d3.csv("data/fatality-rate.csv"),
         d3.csv("data/fatalities-per-100-mvt.csv"),
+        // d3.csv('data/ACCIDENT.csv', function (d) {
+        //     d.id = `s${parseInt(d.STATE)}`;
+        //     d.fatal = +d.FATALS;
+        //
+        //     return d;
+        // })
     ]).then(function (files) {
         map = new StateMap(files[0], tooltip);
         map.drawMap();
         console.log(files[0]);
         console.log(files[1]);
+        // console.log(files[2]);
         spinner.stop();
     }).catch(function (err) {
         console.log(err);
