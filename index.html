@@ -7,12 +7,36 @@
     <link rel="stylesheet" href="main.css"/>
     <!--script src="https://d3js.org/d3.v5.js"></script-->
     <script src="d3.js"></script>
-    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+    <script src="js/map.js" async></script>
     <script src="js/script.js" async></script>
+
 </head>
 
 <body>
 <div class="container">
+
+    <header>
+        <h1>US Crash Statistics</h1>
+        <div>Team: Two and A Half Beards</div>
+        <div>
+            Paxton Alexander, Brady Bodily, Zac Johnson
+        </div>
+    </header>
+    <div>
+        <div id="plot-selector">
+            <label>Year:</label>
+            <select id="dataset" onchange="chooseData()">
+                <option selected value="attendance">Attendance</option>
+                <option value="teams">Teams</option>
+                <option value="matches">Matches</option>
+                <option value="goals">Goals</option>
+            </select>
+        </div>
+        <svg id="map"></svg>
+    </div>
+
+
 </div>
 
 
