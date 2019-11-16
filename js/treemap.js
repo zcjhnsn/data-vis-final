@@ -91,11 +91,13 @@ class TreeMap {
             var root = stratify(data)
                 .sum(function (d) {
                     return d.value;
-                })
-                .sort(function (a, b) {
-                    return b.height - a.height || b.value - a.value;
                 });
+                // .sort(function (a, b) {
+                //     return b.value - a.value;
+                // });
+
             treemap(root);
+
             var cell = svg
                 .selectAll(".node")
                 .data(root.descendants())

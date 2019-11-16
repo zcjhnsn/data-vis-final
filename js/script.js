@@ -1,4 +1,3 @@
-let map;
 let opts = {
     lines: 9, // The number of lines to draw
     length: 9, // The length of each line
@@ -19,28 +18,14 @@ let target = document.getElementById(spinnerConfig.target);
 
 function init() {
     let spinner = new Spinner(opts).spin(target);
-    let tooltip = new Tooltip();
-let map = new Map();
-let treeMap = new TreeMap();
+    tooltip = new Tooltip();
+    var treeMap = new TreeMap();
 
-
-Promise.all([
-    d3.csv("data/fatality-rate.csv"),
-    d3.csv("data/fatalities-per-100-mvt.csv"),
-    d3.csv("data/ACC_AUX.csv"),
-    d3.csv("data/ACCIDENT.csv")
-]).then(function(files) {
-    map.drawMap(files[0]);
-    treeMap.drawTreeMap(files[3]);
-    console.log(files[0]);
-    console.log(files[1]);
-    // files[1] will contain file2.csv
-}).catch(function(err) {
-    console.log(err)
-});
     Promise.all([
         d3.csv("data/fatality-rate.csv"),
         d3.csv("data/fatalities-per-100-mvt.csv"),
+        d3.csv("data/ACC_AUX.csv"),
+        d3.csv("data/ACCIDENT.csv")
         // d3.csv('data/ACCIDENT.csv', function (d) {
         //     d.id = `s${parseInt(d.STATE)}`;
         //     d.fatal = +d.FATALS;
@@ -49,6 +34,7 @@ Promise.all([
         // })
     ]).then(function (files) {
         map = new StateMap(files[0], tooltip);
+        treeMap.drawTreeMap(files[3]);
         map.drawMap();
         console.log(files[0]);
         console.log(files[1]);
