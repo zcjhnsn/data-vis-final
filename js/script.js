@@ -9,6 +9,7 @@ Promise.all([
     d3.csv("data/2018/ACCIDENT.csv")
 ]).then(function(files) {
     map.drawMap(files[0]);
+    treeMap.drawTreeMap(files);
     console.log(files[0]);
     console.log(files[1]);
     // files[1] will contain file2.csv
