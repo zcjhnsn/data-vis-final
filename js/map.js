@@ -2,9 +2,14 @@ class StateMap {
     /**
      * Creates a Map Object
      */
-    constructor(data, tooltip) {
+    constructor(data, stateData, tooltip) {
         this.data = data;
-        this.projection = d3.geoAlbersUsa().scale(1300);
+        this.stateData = stateData;
+        this.width = 960;
+        this.height =  600;
+        this.projection = d3.geoAlbersUsa()
+            .scale(1200)
+            .translate([this.width / 2, this.height / 2]);
         this.tooltip = tooltip;
     }
 
@@ -15,153 +20,42 @@ class StateMap {
 
     }
 
-    drawState(id) {
-        // var width = 960,
-        //     height = 500,
-        //     centered;
-        //
-        // var projection =  d3.geoAlbersUsa()
-        //     .scale(1370)
-        //     .translate([width / 2, height / 2]);
-        //
-        // var path = d3.geoPath()
-        //     .projection(projection);
-        //
-        // var svg = d3.select("#stateMap")
-        //     .attr("width", width)
-        //     .attr("height", height);
-        //
-        //
-        // d3.json("https://d3js.org/us-10m.v1.json")
-        //     .then((json) => {
-        //     console.log(json);
-        //
-        //
-        //     svg.append('g')
-        //         .selectAll("path")
-        //         .attr("id", d => {return d.State})
-        //         .data(topojson.feature(json, json.objects.states).features.filter(function(d) { return `s${d.id}` === id; }))
-        //         .enter()
-        //         .append("path")
-        //         .attr("d", path)
-        //         .attr("class", 'states');
-        //
-        //
-        //
-        // });
+    drawPoints(id, scale, translate) {
+        let year = document.getElementById('year').value;
+        let matches = this.stateData.filter(d => {
+            if (d.YEAR === year && d.id === `s${id}`)
+                return d;
+        });
+        let coords = matches.map(d => {
+            return [parseFloat(d.LONGITUD), parseFloat(d.LATITUDE)];
+        });
 
-        // var width = 960,
-        //     height = 500;
-        //
-        // var projection = d3.geoAlbersUsa();
-        //
-        // /*
-        // var projection = d3.geo.transverseMercator()
-        //           .rotate([120 + 30 / 60, -38 - 50 / 60])
-        //
-        // */
-        //
-        // var path = d3.geoPath()
-        //     .projection(projection);
-        //
-        // var svg = d3.select("#stateMap")
-        //     .attr("width", width)
-        //     .attr("height", height);
-        // d3.json("https://d3js.org/us-10m.v1.json")
-        //     .then(us => {
-        //
-        //         var states = topojson.feature(us, us.objects.states),
-        //             state = states.features.filter(function (d) {
-        //                 return `s${d.id}` === id;
-        //             })[0];
-        //
-        //         projection.scale(1)
-        //             .translate([0, 0]);
-        //
-        //         var b = path.bounds(state),
-        //             s = .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
-        //             t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
-        //
-        //         projection.scale(s)
-        //             .translate(t);
-        //
-        //
-        //         // svg.append("path")
-        //         //     .datum(topojson.mesh(us, us.objects.states, function (a, b) {
-        //         //         return a !== b;
-        //         //     }))
-        //         //     .attr("class", "mesh")
-        //         //     .attr("d", path);
-        //
-        //         svg.append("path")
-        //             .datum(state)
-        //             .attr("class", "outline")
-        //             .attr("d", path)
-        //             .attr('id', 'land');
-        //
-        //         svg.append("clipPath")
-        //             .attr("id", "clip-land")
-        //             .append("use")
-        //             .attr("xlink:href", "#land");
-        //
-        //         svg.selectAll("path")
-        //             .data(topojson.feature(us, us.objects.counties).features)
-        //             .enter().append("path")
-        //             .attr("d", path)
-        //             .attr('county-id', function (d) {
-        //                 return d.State;
-        //             }).attr("clip-path", "url(#clip-land)")
-        //             .attr('class', 'county');
-        //
-        //     });
+        let svg = d3.select('#map');
+        svg.selectAll('g')
+            .selectAll('circle')
+            .remove()
+        ;
 
-
-        // let map = d3.select("#stateMap")
-        //     .attr('width', 860)
-        //     .attr('height', 500)
-        // ;
-        // let path = d3.geoPath();
-        // d3.json("https://d3js.org/us-10m.v1.json")
-        //     .then((us) => {
-        //         let states = topojson.feature(us, us.objects.states).features;
-        //         let state = states.filter(function (d) {
-        //                 return `s${d.id}` === id;
-        //             })[0];
-        //         console.log(state);
-        //         map.append("g")
-        //             .attr("class", 'states')
-        //             .selectAll("path")
-        //             .data(state)
-        //             .enter().append("path")
-        //
-        //             // .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-        //             .attr('id', function(d) {
-        //                 return `s${parseInt(d.id)}`
-        //             })
-        //             .attr("d", path)
-        //
-        //             // .on('click', (d) => {
-        //             //     console.log(`s${parseInt(d.id)}`);
-        //             //     this.drawState(`s${parseInt(d.id)}`)
-        //             // })
-        //             // .on('mouseover', (d) => {
-        //             //     this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
-        //             // })
-        //             // .on('mouseout', (d) => {
-        //             //     this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
-        //             // })
-        //             // .on('mousemove', (d) => {
-        //             //     this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
-        //             //
-        //             // })
-        //         ;
-        //
-        //         map.append("path")
-        //             .datum(topojson.mesh(us, state, function(a, b) { return a !== b; }))
-        //             .attr("class", "state-borders")
-        //             .attr("d", path)
-        //         ;
-        //     })
+        svg.append('g')
+            .selectAll('circle')
+            .data(coords)
+            .enter()
+            .append('circle')
+            .attr('cx', (d,i) => {
+                if (d !== undefined)
+                    if (this.projection(d) !== null)
+                        return this.projection(d)[0]
+            })
+            .attr('cy', (d,i) => {
+                if (d !== undefined)
+                    if (this.projection(d) !== null)
+                        return this.projection(d)[1];
+            })
+            .attr('r', '1')
+            .classed('crash-dot', true)
+            .transition()
+            .duration(750)
+            .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
     }
 
 
@@ -186,10 +80,6 @@ class StateMap {
         d3.select('.states')
             .selectAll('path')
             .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-            .on('click', (d) => {
-                console.log(`s${parseInt(d.id)}`);
-                this.drawState(`s${parseInt(d.id)}`)
-            })
             .on('mouseover', (d) => {
                 this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
             })
@@ -227,14 +117,92 @@ class StateMap {
             .domain([d3.min(fatalities), d3.max(fatalities)])
             .interpolator(d3.interpolateReds);
 
-        // let colorScale = d3.scaleQuantize()
-        //     .domain([d3.min(fatalities),d3.max(fatalities)])
-        //     .range(["#1e99be", "#2b8cbe","#3138bd", "#0a0fc2", "#020053"])
+
+        let _this = this;
+
+        let active = d3.select(null),
+            width = this.width,
+            height = this.height
+        ;
 
         let map = d3.select("#map")
-            .attr('width', 960)
-            .attr('height', 600)
+            .attr('width', width)
+            .attr('height', height)
         ;
+
+
+        let path = d3.geoPath().projection(this.projection);
+        map.append("rect")
+            .attr("class", "background")
+            .attr("width", width)
+            .attr("height", height)
+            .on("click", reset);
+        let g = map.append('g')
+            .classed('states', true)
+        ;
+        d3.json("/data/us.json")
+            .then((us) => {
+                    g.selectAll("path")
+                        .data(topojson.feature(us, us.objects.states).features)
+                        .enter()
+                        .append("path")
+                        .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
+                        .attr('id', function(d) {
+                            return `s${parseInt(d.id)}`
+                        })
+                        .attr("d", path)
+                        .on('click', zoom)
+                        .on('mouseover', (d) => {
+                            this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
+                        })
+                        .on('mouseout', (d) => {
+                            this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
+                        })
+                        .on('mousemove', (d) => {
+                            this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
+
+                        })
+                ;
+
+                g.append("path")
+                    .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+                    .attr("class", "state-borders")
+                    .attr("d", path)
+                ;
+            });
+
+        function zoom(d) {
+            if (active.node() === this) return reset();
+
+            active.classed("active", false);
+            active = d3.select(this).classed("active", true);
+
+            let bounds = path.bounds(d),
+                dx = bounds[1][0] - bounds[0][0],
+                dy = bounds[1][1] - bounds[0][1],
+                x = (bounds[0][0] + bounds[1][0]) / 2,
+                y = (bounds[0][1] + bounds[1][1]) / 2,
+                scale = .9 / Math.max(dx / width, dy / height),
+                translate = [width / 2 - scale * x, height / 2 - scale * y];
+            _this.drawPoints(d.id, scale, translate);
+            g.transition()
+                .duration(750)
+                .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+        }
+
+         function reset() {
+             let svg = d3.select('#map');
+             svg.selectAll('g')
+                 .selectAll('circle')
+                 .remove()
+             ;
+            active.classed("active", false);
+            active = d3.select(null);
+
+             g.transition()
+                .duration(750)
+                .attr("transform", "");
+        }
 
         let key = map
             .append("g")
@@ -298,43 +266,6 @@ class StateMap {
 
 
 
-        let path = d3.geoPath();
-        d3.json("https://d3js.org/us-10m.v1.json")
-            .then((us) => {
-                map.append("g")
-                    .attr("class", 'states')
-                    .selectAll("path")
-                    .data(topojson.feature(us, us.objects.states).features)
-                    .enter().append("path")
-
-                    .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-                    .attr('id', function(d) {
-                        return `s${parseInt(d.id)}`
-                    })
-                    .attr("d", path)
-
-                    .on('click', (d) => {
-                        console.log(`s${parseInt(d.id)}`);
-                        this.drawState(`s${parseInt(d.id)}`)
-                    })
-                    .on('mouseover', (d) => {
-                        this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
-                    })
-                    .on('mouseout', (d) => {
-                        this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
-                    })
-                    .on('mousemove', (d) => {
-                        this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
-
-                    })
-                ;
-
-                map.append("path")
-                    .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-                    .attr("class", "state-borders")
-                    .attr("d", path)
-                ;
-            })
 
     }
 
