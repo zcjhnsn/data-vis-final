@@ -264,9 +264,6 @@ class StateMap {
             .style("text-anchor", "end")
             .text("axis title");
 
-
-
-
     }
 
 
