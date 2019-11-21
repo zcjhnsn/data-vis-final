@@ -23,10 +23,25 @@ html, body {
     stroke-width: 0.5px;
     stroke-linejoin: round;
     stroke-linecap: round;
+    cursor: pointer;
 }
 .state-borders {
     fill: none;
+    stroke: #000;
+    stroke-linecap: round;
+    stroke-linejoin: round;
     pointer-events: none;
+}
+
+.crash-dot {
+    fill: royalblue;
+    pointer-events: none;
+}
+
+
+.background {
+    fill: #eee;
+    pointer-events: all;
 }
 
 .d3-tip {
