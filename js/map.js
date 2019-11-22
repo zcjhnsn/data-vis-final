@@ -24,13 +24,18 @@ class StateMap {
     drawPoints(id, scale, translate) {
         let year = document.getElementById('year').value;
         let matches = this.stateData.filter(d => {
-            if (d.YEAR === year && d.id === `s${id}`)
+            if ((d.YEAR === year || d.YEAR === year.substring(2, 5)) && d.id === `s${id}`)
                 return d;
         });
         let coords = matches.map(d => {
-            return [parseFloat(d.LONGITUD), parseFloat(d.LATITUDE)];
+            if (isNaN(parseFloat(d.LONGITUD)))
+                return [parseFloat(d.longitud), parseFloat(d.latitude)];
+            else
+                return [parseFloat(d.LONGITUD), parseFloat(d.LATITUDE)];
         });
 
+        console.log(matches);
+        console.log(coords);
         let svg = d3.select('#map');
         svg.selectAll('g')
             .selectAll('circle')
@@ -123,7 +128,9 @@ class StateMap {
             .attr("y", 0)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("axis title");
+            .text("axis title")
+
+        ;
 
     }
 

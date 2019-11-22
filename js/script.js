@@ -24,7 +24,7 @@ function init() {
     Promise.all([
         d3.csv("data/fatality-rate.csv"),
         d3.csv("data/fatalities-per-100-mvt.csv"),
-        d3.csv('data/small_acc.csv', function (d) {
+        d3.csv('data/ACCIDENT.csv', function (d) {
             d.id = `s${parseInt(d.STATE)}`;
             d.fatal = +d.FATALS;
 
@@ -32,6 +32,7 @@ function init() {
         })
     ]).then(function (files) {
         map = new StateMap(files[0], files[1], files[2], tooltip);
+        console.log(files[2])
         map.drawMap();
         spinner.stop();
     }).catch(function (err) {
@@ -43,8 +44,9 @@ function init() {
 function updateData() {
     let year = document.getElementById('year').value;
     let selected;
-    if (document.getElementById('total').checked)
+    if (document.getElementById('total').checked) {
         selected = 'total';
+    }
     else
         selected = 'vmt';
     map.updateMap(year, selected)
