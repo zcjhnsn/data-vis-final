@@ -74,7 +74,6 @@ class StateMap {
             .attr("height", 30)
             .attr('id', 'legend')
         ;
-
         let legend = key.append("defs")
             .append("svg:linearGradient")
             .attr("id", "gradient")
