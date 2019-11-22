@@ -2,8 +2,9 @@ class StateMap {
     /**
      * Creates a Map Object
      */
-    constructor(data, stateData, tooltip) {
+    constructor(data, vmtData, stateData, tooltip) {
         this.data = data;
+        this.vmtData = vmtData;
         this.stateData = stateData;
         this.width = 960;
         this.height =  600;
@@ -58,156 +59,16 @@ class StateMap {
             .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
     }
 
-
-    updateMap(year) {
-        let total = 0;
-        let fatalities = this.data.map(s => {
-            if (s.ID !== "9999")
-                return parseInt(s[year]);
-            else
-                total = parseInt(s[year]);
-        });
-        document.getElementById('national-total').innerHTML = `Total Fatalities: ${total}`;
-        let ids = this.data.map(s => {return `s${s.ID}`});
-        let states = {};
-        ids.forEach((id, i) => {
-            states[id] = fatalities[i]
-        });
-        let colorScale = d3.scaleSequential()
-            .domain([d3.min(fatalities), d3.max(fatalities)])
-            .interpolator(d3.interpolateReds);
-
-        d3.select('.states')
-            .selectAll('path')
-            .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-            .on('mouseover', (d) => {
-                this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
-            })
-            .on('mouseout', (d) => {
-                this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
-            })
-            .on('mousemove', (d) => {
-                this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
-            })
+    drawLegend(fatalities) {
+        d3.select('#legend')
+            .remove()
         ;
-
-    }
-
-    /**
-     * Adapted from https://bl.ocks.org/adamjanes/6cf85a4fd79e122695ebde7d41fe327f
-     */
-
-
-    drawMap() {
-        let year = document.getElementById('year').value;
-        let total = 0;
-        let fatalities = this.data.map(s => {
-            if (s.ID !== "9999")
-                return parseInt(s[year]);
-            else
-                total = parseInt(s[year]);
-        });
-        document.getElementById('national-total').innerHTML = `Total Fatalities: ${total}`;
-        let ids = this.data.map(s => {return `s${s.ID}`});
-        let states = {};
-        ids.forEach((id, i) => {
-            states[id] = fatalities[i]
-        });
-        let colorScale = d3.scaleSequential()
-            .domain([d3.min(fatalities), d3.max(fatalities)])
-            .interpolator(d3.interpolateReds);
-
-
-        let _this = this;
-
-        let active = d3.select(null),
-            width = this.width,
-            height = this.height
-        ;
-
-        let map = d3.select("#map")
-            .attr('width', width)
-            .attr('height', height)
-        ;
-
-
-        let path = d3.geoPath().projection(this.projection);
-        map.append("rect")
-            .attr("class", "background")
-            .attr("width", width)
-            .attr("height", height)
-            .on("click", reset);
-        let g = map.append('g')
-            .classed('states', true)
-        ;
-        d3.json("/data/us.json")
-            .then((us) => {
-                    g.selectAll("path")
-                        .data(topojson.feature(us, us.objects.states).features)
-                        .enter()
-                        .append("path")
-                        .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
-                        .attr('id', function(d) {
-                            return `s${parseInt(d.id)}`
-                        })
-                        .attr("d", path)
-                        .on('click', zoom)
-                        .on('mouseover', (d) => {
-                            this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
-                        })
-                        .on('mouseout', (d) => {
-                            this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
-                        })
-                        .on('mousemove', (d) => {
-                            this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
-
-                        })
-                ;
-
-                g.append("path")
-                    .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-                    .attr("class", "state-borders")
-                    .attr("d", path)
-                ;
-            });
-
-        function zoom(d) {
-            if (active.node() === this) return reset();
-
-            active.classed("active", false);
-            active = d3.select(this).classed("active", true);
-
-            let bounds = path.bounds(d),
-                dx = bounds[1][0] - bounds[0][0],
-                dy = bounds[1][1] - bounds[0][1],
-                x = (bounds[0][0] + bounds[1][0]) / 2,
-                y = (bounds[0][1] + bounds[1][1]) / 2,
-                scale = .9 / Math.max(dx / width, dy / height),
-                translate = [width / 2 - scale * x, height / 2 - scale * y];
-            _this.drawPoints(d.id, scale, translate);
-            g.transition()
-                .duration(750)
-                .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-        }
-
-         function reset() {
-             let svg = d3.select('#map');
-             svg.selectAll('g')
-                 .selectAll('circle')
-                 .remove()
-             ;
-            active.classed("active", false);
-            active = d3.select(null);
-
-             g.transition()
-                .duration(750)
-                .attr("transform", "");
-        }
-
-        let key = map
+        let key = d3.select('#map')
             .append("g")
             .attr("width", 300)
-            .attr("height", 30);
+            .attr("height", 30)
+            .attr('id', 'legend')
+        ;
 
         let legend = key.append("defs")
             .append("svg:linearGradient")
@@ -245,7 +106,7 @@ class StateMap {
             .attr("transform", "translate(600,0)");
 
         let y = d3.scaleLinear()
-            .domain([4000, 0])
+            .domain([d3.max(fatalities), d3.min(fatalities)])
             .range([300, 0])
         ;
 
@@ -266,5 +127,165 @@ class StateMap {
 
     }
 
+    updateMap(year, selected) {
+        let data = selected === 'total' ? this.data : this.vmtData;
+        let total = 0;
+        let fatalities = data.map(s => {
+            if (s.ID !== "9999")
+                return parseFloat(s[year]);
+            else
+                total = parseFloat(s[year]);
+        });
+        if (selected === 'total')
+            document.getElementById('national-total').innerHTML = `Total Fatalities: ${total}`;
+        else
+            document.getElementById('national-total').innerHTML = `Total Fatalities per 100 Million Miles Traveled: ${total}`;
+
+        let ids = data.map(s => {return `s${s.ID}`});
+        let states = {};
+        ids.forEach((id, i) => {
+            states[id] = fatalities[i]
+        });
+        let colorScale = d3.scaleSequential()
+            .domain([d3.min(fatalities), d3.max(fatalities)])
+            .interpolator(d3.interpolateReds);
+
+        d3.select('.states')
+            .selectAll('path')
+            .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
+            .on('mouseover', (d) => {
+                this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
+            })
+            .on('mouseout', (d) => {
+                this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
+            })
+            .on('mousemove', (d) => {
+                this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
+            })
+        ;
+
+        this.drawLegend(fatalities);
+
+    }
+
+    /**
+     * Adapted from https://bl.ocks.org/adamjanes/6cf85a4fd79e122695ebde7d41fe327f
+     */
+
+
+    drawMap() {
+        let year = document.getElementById('year').value;
+        let total = 0;
+        let fatalities = this.data.map(s => {
+            if (s.ID !== "9999")
+                return parseInt(s[year]);
+            else
+                total = parseInt(s[year]);
+        });
+        document.getElementById('national-total').innerHTML = `Total Fatalities: ${total}`;
+        let ids = this.data.map(s => {
+            return `s${s.ID}`
+        });
+        let states = {};
+        ids.forEach((id, i) => {
+            states[id] = fatalities[i]
+        });
+        let colorScale = d3.scaleSequential()
+            .domain([d3.min(fatalities), d3.max(fatalities)])
+            .interpolator(d3.interpolateReds);
+
+
+        let _this = this;
+
+        let active = d3.select(null),
+            width = this.width,
+            height = this.height
+        ;
+
+        let map = d3.select("#map")
+            .attr('width', width)
+            .attr('height', height)
+        ;
+
+
+        let path = d3.geoPath().projection(this.projection);
+        map.append("rect")
+            .attr("class", "background")
+            .attr("width", width)
+            .attr("height", height)
+            .on("click", reset);
+        let g = map.append('g')
+            .classed('states', true)
+        ;
+        d3.json("/data/us.json")
+            .then((us) => {
+                g.selectAll("path")
+                    .data(topojson.feature(us, us.objects.states).features)
+                    .enter()
+                    .append("path")
+                    .attr("fill", function (d) {
+                        return colorScale(states[`s${parseInt(d.id)}`]);
+                    })
+                    .attr('id', function (d) {
+                        return `s${parseInt(d.id)}`
+                    })
+                    .attr("d", path)
+                    .on('click', zoom)
+                    .on('mouseover', (d) => {
+                        this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
+                    })
+                    .on('mouseout', (d) => {
+                        this.tooltip.mouseout(states[`s${parseInt(d.id)}`])
+                    })
+                    .on('mousemove', (d) => {
+                        this.tooltip.mousemove(states[`s${parseInt(d.id)}`])
+
+                    })
+                ;
+
+                g.append("path")
+                    .datum(topojson.mesh(us, us.objects.states, function (a, b) {
+                        return a !== b;
+                    }))
+                    .attr("class", "state-borders")
+                    .attr("d", path)
+                ;
+            });
+
+        function zoom(d) {
+            if (active.node() === this) return reset();
+
+            active.classed("active", false);
+            active = d3.select(this).classed("active", true);
+
+            let bounds = path.bounds(d),
+                dx = bounds[1][0] - bounds[0][0],
+                dy = bounds[1][1] - bounds[0][1],
+                x = (bounds[0][0] + bounds[1][0]) / 2,
+                y = (bounds[0][1] + bounds[1][1]) / 2,
+                scale = .9 / Math.max(dx / width, dy / height),
+                translate = [width / 2 - scale * x, height / 2 - scale * y];
+            _this.drawPoints(d.id, scale, translate);
+            g.transition()
+                .duration(750)
+                .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+        }
+
+        function reset() {
+            let svg = d3.select('#map');
+            svg.selectAll('g')
+                .selectAll('circle')
+                .remove()
+            ;
+            active.classed("active", false);
+            active = d3.select(null);
+
+            g.transition()
+                .duration(750)
+                .attr("transform", "");
+        }
+
+        this.drawLegend(fatalities);
+    }
 
 }
