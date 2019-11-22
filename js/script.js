@@ -43,8 +43,9 @@ function init() {
 function updateData() {
     let year = document.getElementById('year').value;
     let selected;
-    if (document.getElementById('total').checked)
+    if (document.getElementById('total').checked) {
         selected = 'total';
+    }
     else
         selected = 'vmt';
     map.updateMap(year, selected)
