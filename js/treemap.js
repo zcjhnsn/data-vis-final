@@ -2,8 +2,20 @@ class TreeMap {
 
     constructor(data, tooltip) {
         this.data = data;
-        this.nested_data = d3.nest()
-        //.key(d => d.YEAR)
+    }
+
+    drawTreeMap() {
+        var data = this.data;
+
+        data.forEach(function (d) {
+            d['FATALS'] = +d.FATALS;
+            d["PERSONS"] = +d.PERSONS;
+            d['MONTH'] = +d.MONTH;
+            d['HOUR'] = +d.HOUR;
+            d['DAY_WEEK'] = +d.DAY_WEEK;
+        });
+
+        var nest = d3.nest()
             .key(function (d) {
                 return d.MONTH;
             })
@@ -19,86 +31,47 @@ class TreeMap {
             //         return d.FATALS;
             //     });
             //})
-            .rollup(function(values) { return d3.sum(values, function(value) { return value.FATALS; })})
-
-    .entries(data);
-
-        this.width = 900;
-        this.height =  600;
-        this.tooltip = tooltip;
+            .rollup(function (values) {
+                return d3.sum(values, function (value) {
+                    return value.FATALS;
+                })
+            });
 
 
-        this.treemapLayout = d3.treemap()
-            .size([900, 600])
+        var treemapLayout = d3.treemap()
+            .size([700, 500])
             .paddingOuter(10);
-    }
 
-    drawTreeMap() {
+        var root = d3.hierarchy({values: nest.entries(data)}, function (d) {
+            return d.values;
+        })
+            .sum(function (d) {
+                return d.value;
+            })
+            .sort(function (a, b) {
+                return b.value - a.value;
+            });
 
+        treemapLayout(root);
 
-        var width = 900, height = 600;
-
-        var svg = d3.select("#treeMap")
-            .append('svg')
-            .attr('width', width)
-            .attr('height', height);
-
-        console.log("next");
-
-
-        var root = d3.hierarchy({values: this.nested_data.entries(this.data)}, function(d) { return d.values; })
-            .sum(function(d) { console.log(d.value); return d.value; })
-            .sort(function(a, b) { return b.value - a.value ; });
-
-
-
-        console.log("root.Desendents");
-        console.log(root.descendants());
-
-
-        this.treemapLayout(root);
-
-
-
-
-        svg.selectAll('rect')
-            .data(root.leaves())
+        d3.select('g')
+            .selectAll('rect')
+            .data(root.descendants())
             .enter()
             .append('rect')
             .attr("class", "rect")
-            .attr('x', function(d) { return d.x0; })
-            .attr('y', function(d) { return d.y0; })
-            .attr('width', function(d) { return d.x1 - d.x0; })
-            .attr('height', function(d) { return d.y1 - d.y0; });
+            .attr('x', function (d) {
+                return d.x0;
+            })
+            .attr('y', function (d) {
+                return d.y0;
+            })
+            .attr('width', function (d) {
+                return d.x1 - d.x0;
+            })
+            .attr('height', function (d) {
+                return d.y1 - d.y0;
+            });
 
-
-        console.log(this.nested_data);
-        console.log('########################');
-        console.log(this.data);
-        // let title = this.data[0]["YEAR"];
-        // let state = this.data[0]["STATE"];
-        // for (let i = 100; i < data.length; i += 100) {
-        //     if (this.data[i]["STATE"] != state) {
-        //         title = "Total";
-        //         break;
-        //     }
-        // }
-
-        // let format = d3.formatLocal({
-        //     'groupings': [3],
-        // })
-
-
-
-
-       // }
-        function type(d) {
-            d['FATALS'] = +d.FATALS;
-            d["PERSONS"] = +d.PERSONS;
-            d['MONTH'] = +d.MONTH;
-            d['HOUR'] = +d.HOUR;
-            d['DAY_WEEK'] = +d.DAY_WEEK;
-            return d;
-        }
     }
 }
