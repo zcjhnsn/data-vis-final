@@ -95,6 +95,11 @@ html, body {
     stroke-linejoin: round;
 }
 
+.rect {
+    fill: cadetblue;
+    opacity: 0.3;
+    stroke: white;
+}
 /*path {*/
     /*fill: #ccc;*/
     /*stroke: #fff;*/

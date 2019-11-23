@@ -33,11 +33,17 @@ function init() {
     ]).then(function (files) {
         map = new StateMap(files[0], files[1], files[2], tooltip);
         map.drawMap();
+
+
+        treemap = new TreeMap(files[2], tooltip);
+        treemap.drawTreeMap();
+
+
         var chart = d3.parsets()
-          .dimensions(["STATE", "YEAR", "MONTH", "DAY_WEEK", "FATALS"])
+            .dimensions(["STATE", "YEAR", "MONTH", "DAY_WEEK", "FATALS"])
         var parset = d3.select("#parsets").append("svg")
-          .attr("width", chart.width())
-          .attr("height", chart.height());
+            .attr("width", chart.width())
+            .attr("height", chart.height());
         parset.datum(files[2]).call(chart);
         spinner.stop();
     }).catch(function (err) {
