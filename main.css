@@ -88,25 +88,3 @@ html, body {
 .county:hover{
     fill:orange;
 }
-
-.node {
-    box-sizing: border-box;
-    line-height: 1em;
-    overflow: hidden;
-    position: absolute;
-    white-space: pre;
-    background: #ddd;
-}
-
-.node-label,
-.node-value {
-    margin: 4px;
-}
-
-.node-value {
-    margin-top: -2px;
-}
-
-.node-value {
-    font-weight: bold;
-}
