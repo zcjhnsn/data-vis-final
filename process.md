@@ -97,6 +97,7 @@ We attempted a few different variations on the state map. We were going to have 
 Since we are doing data for the last 25 years, we needed a way for the user to select which year they wanted. This is achieved with a simple dropdown. There is also two buttons that can toggle the data used in the map. The two datasets are total fatalities per state, and total fatalities per 100 million miles traveled. Clicking on a state zooms into that state and shows each individual car crash. Clicking another state will move there. Clicking the selected state or off the map will zoom the map back out.
 
 ![](resources/viz-demo.gif)
+![](resources/TreeMapDemp.png)
 
 ### Evaluation
 We were somewhat surprised at the number of fatalities per year. We had anticipated it to be higher. Viewing by miles also makes quite a difference as to which state is really the deadliest. The state viz works pretty well, it could benefit from optimization however.
