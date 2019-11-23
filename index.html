@@ -38,15 +38,29 @@
     <div >
         <h3 id="national-total" class="text-center"></h3>
     </div>
-    <div style="width: 50%;">
-        <h3 class="text-center">Fatalities by State</h3>
-
-        <svg id="map"></svg>
+    <div style="width: 47%; margin-left: 3%" class="float-left text-center">
+        <h3 id="map-title" class="text-center d-inline">Fatalities by State</h3>
+        <span class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="total" autocomplete="off" checked onchange="updateData()"> Total
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" id="vmt" autocomplete="off" onchange="updateData()"> Total per 100 Million Miles Traveled
+            </label>
+        </span>
+        <svg id="map" class="mt-3"></svg>
+        <h6>Specific locations not available before 2001</h6>
    </div>
-    <div style="width: 40%;">
 
-        <svg id="stateMap"></svg>
+    <div style="width: 50%;" class="float-right">
+
+        <svg id="stateMap">
+            <g id="points"></g>
+        </svg>
+
     </div>
+    <div id="parsets"></div>
+
 
 </div>
 
@@ -70,6 +84,7 @@
 <script src="js/map.js" async></script>
 <script src="js/tooltip.js" async></script>
 <script src="js/script.js" async></script>
+<script src="d3.parsets.js" async></script>
 
 </body>
 </html>
