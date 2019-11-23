@@ -54,6 +54,7 @@ class TreeMap {
 
         treemapLayout(root);
 
+
         let map = d3.select('#treeMap')
             .attr('width', 1300)
             .attr('height', 1000)
