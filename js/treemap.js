@@ -23,34 +23,46 @@ class TreeMap {
 
     .entries(data);
 
-        this.width = 500;
-        this.height =  500;
+        this.width = 900;
+        this.height =  600;
         this.tooltip = tooltip;
 
 
         this.treemapLayout = d3.treemap()
-            .size([500, 500])
+            .size([900, 600])
             .paddingOuter(10);
     }
 
     drawTreeMap() {
 
 
-        var width = 500, height = 500;
+        var width = 900, height = 600;
 
         var svg = d3.select("#treeMap")
             .append('svg')
             .attr('width', width)
             .attr('height', height);
 
-        var root = d3.hierarchy({values: this.nested_data.entries(this.data)}, function(d) { return d.FATALS; })
-            .sum(function(d) { return d.FATALS; })
-            .sort(function(a, b) { return b.FATALS - a.FATALS ; });
+        console.log("next");
+
+
+        var root = d3.hierarchy({values: this.nested_data.entries(this.data)}, function(d) { return d.values; })
+            .sum(function(d) { console.log(d.value); return d.value; })
+            .sort(function(a, b) { return b.value - a.value ; });
+
+
+
+        console.log("root.Desendents");
+        console.log(root.descendants());
+
 
         this.treemapLayout(root);
 
+
+
+
         svg.selectAll('rect')
-            .data(root.descendants())
+            .data(root.leaves())
             .enter()
             .append('rect')
             .attr("class", "rect")
