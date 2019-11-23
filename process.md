@@ -76,7 +76,7 @@ Finishing touches and submission.
 # Prototype
 
 ### Overview and Motivation
-We wanted to explore vehicle crashes and fatality rates in the US over the las 25 years. We planned to show this on a National and state level. This visualization can provide insight as to whether driving has become safer in the last 25 years.
+We wanted to explore vehicle crashes and fatality rates in the US over the last 25 years. We planned to show this on a national and state level. This visualization can provide insight as to whether driving has become safer in the last 25 years.
 
 ### Related Work
 The Treemap and Parallel set visualizations from class were two that we knew we wanted to implement. We did have to gather some ideas from websites on good visualizations, but ultimately we are taking our own route.
@@ -92,7 +92,7 @@ There were a few headaches when gathering our data. Luckily, it was not a lack o
 We looked at all our data through spreadsheets. We spent all our time just getting it to load into our own visualizations that we didn't get much time to explore others.
 
 ### Design Evolution
-We attempted a few different variations on the state map. We were going to have it display a table when clicked. That evolved into having it draw the state and display the crashes. Then we ended on having it zoom to a state and draw the crash dots. The Treemap and Parallel set are still a work in progress, so they will likely go through some more iterations of design. One possibility of the Treemap is that we limit the scope to either the selected state, the selected year, or the selected year and selected state. This could be acomplished with a selection tool for just that visualization.
+We attempted a few different variations on the state map. We were going to have it display a table when clicked. That evolved into having it draw the state and display the crashes. Then we ended on having it zoom to a state and draw the crash dots. The Treemap and Parallel set are still a work in progress, so they will likely go through some more iterations of design. One possibility of the Treemap is that we limit the scope to either the selected state, the selected year, or the selected year and selected state. This could be acomplished with a selection tool for just that visualization. The parallel set will need a different data set than the one originally used. The data is refined too much so the lines get very small and it becomes impossible to learn anything from it.
 
 ### Implementation
 Since we are doing data for the last 25 years, we needed a way for the user to select which year they wanted. This is achieved with a simple dropdown. There is also two buttons that can toggle the data used in the map. The two datasets are total fatalities per state, and total fatalities per 100 million miles traveled. Clicking on a state zooms into that state and shows each individual car crash. Clicking another state will move there. Clicking the selected state or off the map will zoom the map back out.
@@ -100,5 +100,11 @@ Since we are doing data for the last 25 years, we needed a way for the user to s
 ![](resources/viz-demo.gif)
 ![](resources/TreeMapDemo.png)
 
+The parallel already has a high level of interactivity. It is similar to the titanic parallel set that we saw in class. The user is able to rearrange all pieces of the parallel set to see how the data is related. This allows for the user to discover new connections than the ones they are initially presented with. The user is also able to highlight certain criterion to better see all the connections.
+
+![](resources/parset-demo.gif)
+
 ### Evaluation
 We were somewhat surprised at the number of fatalities per year. We had anticipated it to be higher. Viewing by miles also makes quite a difference as to which state is really the deadliest. The state viz works pretty well, it could benefit from optimization however.
+
+We were quickly able to see that the type of data given to the parallel set diagram matters. In the above gif, some datapoints have been sorted to very fine numbers. This is because the month data then splits based on the day of the month. Order matters and, since the user can rearrange the vis at will, a reset button would be good to add. Also, the types of data that we give the parallel set can't have too wide of a range since the chart is nearly impossible to read further down the chart.
