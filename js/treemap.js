@@ -54,7 +54,7 @@ class TreeMap {
 
         treemapLayout(root);
 
-        d3.select('g')
+        d3.select('#tMap')
             .selectAll('rect')
             .data(root.descendants())
             .enter()
