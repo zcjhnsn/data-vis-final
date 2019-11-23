@@ -98,6 +98,8 @@ We attempted a few different variations on the state map. We were going to have 
 Since we are doing data for the last 25 years, we needed a way for the user to select which year they wanted. This is achieved with a simple dropdown. There is also two buttons that can toggle the data used in the map. The two datasets are total fatalities per state, and total fatalities per 100 million miles traveled. Clicking on a state zooms into that state and shows each individual car crash. Clicking another state will move there. Clicking the selected state or off the map will zoom the map back out.
 
 ![](resources/viz-demo.gif)
+
+The Treemap currently shows all of the data passed into it. 
 ![](resources/TreeMapDemo.png)
 
 The parallel already has a high level of interactivity. It is similar to the titanic parallel set that we saw in class. The user is able to rearrange all pieces of the parallel set to see how the data is related. This allows for the user to discover new connections than the ones they are initially presented with. The user is also able to highlight certain criterion to better see all the connections.
@@ -108,3 +110,5 @@ The parallel already has a high level of interactivity. It is similar to the tit
 We were somewhat surprised at the number of fatalities per year. We had anticipated it to be higher. Viewing by miles also makes quite a difference as to which state is really the deadliest. The state viz works pretty well, it could benefit from optimization however.
 
 We were quickly able to see that the type of data given to the parallel set diagram matters. In the above gif, some datapoints have been sorted to very fine numbers. This is because the month data then splits based on the day of the month. Order matters and, since the user can rearrange the vis at will, a reset button would be good to add. Also, the types of data that we give the parallel set can't have too wide of a range since the chart is nearly impossible to read further down the chart.
+
+There was a bit of a struggle getting the data into a hierarchical data structure for the Treemap. A lot of the documentation is availible for creating Treemaps with previous version however it is sparse for version 5 and there were some significant breaking changes with promises and callbacks.
