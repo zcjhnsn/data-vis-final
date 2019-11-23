@@ -39,7 +39,7 @@ class TreeMap {
 
 
         var treemapLayout = d3.treemap()
-            .size([700, 500])
+            .size([1300, 1000])
             .paddingOuter(10);
 
         var root = d3.hierarchy({values: nest.entries(data)}, function (d) {
@@ -54,7 +54,12 @@ class TreeMap {
 
         treemapLayout(root);
 
-        d3.select('g')
+        let map = d3.select('#treeMap')
+            .attr('width', 1300)
+            .attr('height', 1000)
+            ;
+
+            map.append('g')
             .selectAll('rect')
             .data(root.descendants())
             .enter()
