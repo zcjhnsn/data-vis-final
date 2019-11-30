@@ -52,13 +52,13 @@ html, body {
     }
     #parsets {
         width: 47%;
-        float: right;
+        float: left;
         margin-right: 2%;
         margin-left: 1%;
     }
     #about {
         width: 47%;
-        float: left;
+        float: right;
         margin-left: 2%;
     }
 

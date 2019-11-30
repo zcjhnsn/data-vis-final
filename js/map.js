@@ -121,6 +121,8 @@ class StateMap {
         key.append("g")
             .attr("class", "y axis")
             .attr("transform", "translate(600,20)")
+            .transition()
+            .duration(750)
             .call(yAxis)
             .append("text")
             .attr("transform", "rotate(-90)")

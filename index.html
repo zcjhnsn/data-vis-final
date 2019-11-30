@@ -49,7 +49,7 @@
             </label>
         </span>
         <svg id="map" class="mt-3"></svg>
-        <h6>Specific locations not available before 2001</h6>
+        <h6>Geographic locations not available before 2001</h6>
    </div>
 
     <div class="text-center  mt-3 align-middle" id="tmap" >
@@ -60,24 +60,26 @@
         </svg>
 
     </div>
-    <div class="text-center align-middle mb-3 mt-3" id="parsets">
-        <h3 id="parsetHeading"></h3>
-    </div>
+
     <div class=" mb-3 mt-3" id="about">
         <h3>We need a bunch of stuff here</h3>
         <p>We need a screen capture, link to process.md, <a href="https://github.com/zcjhnsn/data-vis-final">Github repo</a>, etc.</p>
     </div>
+    <div class="text-center align-middle mb-3 mt-3" id="parsets">
+    <h3 id="parsetHeading"></h3>
+</div>
 
 
 </div>
 
 <script>
-    let year = 1994;
-    let till = 2017;
+    let years = [1994, 1995, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2006, 2007, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2017];
+    // let year = 1994;
+    // let till = 2017;
     let options = "";
-    for(let y = till; y >= year; y--){
+    years.reverse().forEach(y => {
         options += "<option>"+ y +"</option>";
-    }
+    })
     document.getElementById("year").innerHTML = options;
 </script>
 
