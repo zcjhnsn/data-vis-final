@@ -38,6 +38,32 @@ html, body {
     pointer-events: none;
 }
 
+@media screen and (min-width: 1024px){
+    #smap {
+        width: 47%;
+        float: left;
+        margin-left: 2%;
+    }
+    #tmap {
+        width: 47%;
+        float: right;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #parsets {
+        width: 47%;
+        float: right;
+        margin-right: 2%;
+        margin-left: 1%;
+    }
+    #about {
+        width: 47%;
+        float: left;
+        margin-left: 2%;
+    }
+
+}
+
 
 .background {
     fill: #eee;
@@ -66,6 +92,10 @@ html, body {
     content: "\25BC";
     border: 2px solid white;
     border-radius: 4px;
+}
+
+.tooltip {
+    opacity: 1 !important;
 }
 
 .axis text {

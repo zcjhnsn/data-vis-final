@@ -60,7 +60,7 @@ class StateMap {
             .transition()
             .duration(750)
             .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
-        treemap.drawTreeMap(matches, this.data);
+        treemap.drawTreeMap(matches, id);
         parset.drawParset(matches);
     }
 
@@ -209,8 +209,8 @@ class StateMap {
         ;
 
         let map = d3.select("#map")
-            .attr('width', width)
-            .attr('height', height)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", `0 0 ${this.width} ${this.height}`)
         ;
 
 
@@ -290,6 +290,7 @@ class StateMap {
                 .duration(750)
                 .attr("transform", "");
             treemap.clearTreemap();
+            parset.clearParset();
         }
 
         this.drawLegend(fatalities);
