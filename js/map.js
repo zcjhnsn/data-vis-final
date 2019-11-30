@@ -34,8 +34,6 @@ class StateMap {
                 return [parseFloat(d.LONGITUD), parseFloat(d.LATITUDE)];
         });
 
-        console.log(matches);
-        console.log(coords);
         let svg = d3.select('#map');
         svg.selectAll('g')
             .selectAll('circle')
@@ -62,6 +60,8 @@ class StateMap {
             .transition()
             .duration(750)
             .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
+        treemap.drawTreeMap(matches, this.data);
+        parset.drawParset(matches);
     }
 
     drawLegend(fatalities) {
@@ -289,6 +289,7 @@ class StateMap {
             g.transition()
                 .duration(750)
                 .attr("transform", "");
+            treemap.clearTreemap();
         }
 
         this.drawLegend(fatalities);

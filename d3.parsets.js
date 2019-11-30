@@ -41,7 +41,6 @@
 
     function parsets(selection) {
       selection.each(function(data, i) {
-        console.log("parsets ", data);
         var g = d3.select(this),
             ordinal = d3.scaleOrdinal(),
             dragging = false,
