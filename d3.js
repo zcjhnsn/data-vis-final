@@ -5167,7 +5167,7 @@ function nest() {
       if (values = valuesByKey.get(keyValue = key(value = array[i]) + "")) {
         values.push(value);
       } else {
-        valuesByKey.set(keyValue, [value]);
+        valuesByKey.parset(keyValue, [value]);
       }
     }
 
@@ -5210,7 +5210,7 @@ function createMap() {
 }
 
 function setMap(map, key, value) {
-  map.set(key, value);
+  map.parset(key, value);
 }
 
 function Set() {}
@@ -6683,7 +6683,7 @@ function simulation(nodes) {
     },
 
     force: function(name, _) {
-      return arguments.length > 1 ? (_ == null ? forces.remove(name) : forces.set(name, initializeForce(_)), simulation) : forces.get(name);
+      return arguments.length > 1 ? (_ == null ? forces.remove(name) : forces.parset(name, initializeForce(_)), simulation) : forces.get(name);
     },
 
     find: function(x, y, radius) {
@@ -11786,7 +11786,7 @@ function ordinal(range) {
     var key = d + "", i = index.get(key);
     if (!i) {
       if (unknown !== implicit) return unknown;
-      index.set(key, i = domain.push(d));
+      index.parset(key, i = domain.push(d));
     }
     return range[(i - 1) % range.length];
   }
@@ -11795,7 +11795,7 @@ function ordinal(range) {
     if (!arguments.length) return domain.slice();
     domain = [], index = map$1();
     var i = -1, n = _.length, d, key;
-    while (++i < n) if (!index.has(key = (d = _[i]) + "")) index.set(key, domain.push(d));
+    while (++i < n) if (!index.has(key = (d = _[i]) + "")) index.parset(key, domain.push(d));
     return scale;
   };
 

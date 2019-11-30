@@ -20,20 +20,6 @@ class Tooltip {
      */
     tooltip_html(d) {
         let text = "<h3>" + d + "</h3>";
-        // text +=  "Electoral Votes: " + d.Total_EV;
-        // text += "<ul>"
-        // // Democrat
-        // text += "<li class = democrat>" +
-        //     d.D_Nominee_prop+":\t\t"+d.D_Votes+"("+d.D_Percentage+"%)" + "</li>"
-        // // Republican
-        // text += "<li class = republican>" +
-        //     d.R_Nominee_prop+":\t\t"+d.R_Votes+"("+d.R_Percentage+"%)" + "</li>"
-        // // Independent
-        // if (d.I_Percentage) {
-        //     text += "<li class = independent>" +
-        //         d.I_Nominee_prop+":\t\t"+d.I_Votes+"("+d.I_Percentage+"%)" + "</li>"
-        // }
-        // text += "</ul>";
         return text;
     }
 

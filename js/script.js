@@ -1,4 +1,6 @@
-let map;
+let map,
+    treemap,
+    parset;
 let opts = {
     lines: 9, // The number of lines to draw
     length: 9, // The length of each line
@@ -24,7 +26,7 @@ function init() {
     Promise.all([
         d3.csv("data/fatality-rate.csv"),
         d3.csv("data/fatalities-per-100-mvt.csv"),
-        d3.csv('data/small_acc.csv', function (d) {
+        d3.csv('data/accident2.csv', function (d) {
             d.id = `s${parseInt(d.STATE)}`;
             d.fatal = +d.FATALS;
 
@@ -33,18 +35,8 @@ function init() {
     ]).then(function (files) {
         map = new StateMap(files[0], files[1], files[2], tooltip);
         map.drawMap();
-
-
         treemap = new TreeMap(files[2], tooltip);
-        treemap.drawTreeMap();
-
-
-        var chart = d3.parsets()
-            .dimensions(["STATE", "YEAR", "MONTH", "DAY_WEEK", "FATALS"])
-        var parset = d3.select("#parsets").append("svg")
-            .attr("width", chart.width())
-            .attr("height", chart.height());
-        parset.datum(files[2]).call(chart);
+        parset = new Parset(files[2]);
         spinner.stop();
     }).catch(function (err) {
         console.log(err);

@@ -38,9 +38,9 @@
     <div >
         <h3 id="national-total" class="text-center"></h3>
     </div>
-    <div style="width: 47%; margin-left: 3%" class="float-left text-center">
-        <h3 id="map-title" class="text-center d-inline">Fatalities by State</h3>
-        <span class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+    <div class="text-center">
+        <h3 id="map-title" class="text-center d-inline align-middle">Fatalities by State</h3>
+        <span class="btn-group btn-group-toggle " data-toggle="buttons">
             <label class="btn btn-secondary active">
                 <input type="radio" name="options" id="total" autocomplete="off" checked onchange="updateData()"> Total
             </label>
@@ -52,8 +52,9 @@
         <h6>Specific locations not available before 2001</h6>
    </div>
 
-    <div style="width: 50%;" >
+    <div class="text-center" >
 
+        <h3>Date and Times of all Fatalities for Selected State</h3>
         <svg id="treeMap">
 
         </svg>
@@ -82,10 +83,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script src="js/map.js" async></script>
+<script src="js/codes.js" async></script>
 <script src="js/treemap.js" async></script>
+<script src="js/parset.js" async></script>
 <script src="js/tooltip.js" async></script>
-<script src="js/script.js" async></script>
 <script src="d3.parsets.js" async></script>
+<script src="js/highlight.min.js" async></script>
+<script src="js/script.js" async></script>
 
 </body>
 </html>
