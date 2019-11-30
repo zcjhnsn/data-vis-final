@@ -13,11 +13,12 @@ class TreeMap {
             .selectAll('text')
             .remove()
         ;
-
+        document.getElementById('tmapHeading').innerHTML = ''
     }
 
-    drawTreeMap(data, fatalities) {
+    drawTreeMap(data, state) {
         this.clearTreemap();
+        document.getElementById('tmapHeading').innerHTML = `Date and Times of all Fatalities for ${codes['State'][state]}`;
         let fatals = 0;
         data.forEach(function (d) {
             d['FATALS'] = +d.FATALS;
@@ -78,8 +79,8 @@ class TreeMap {
 
         treemapLayout(root);
         let map = d3.select('#treeMap')
-            .attr('width', width)
-            .attr('height', height)
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .attr("viewBox", `0 0 ${width} ${height}`)
             ;
 
             map.append('g')
