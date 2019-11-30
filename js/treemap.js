@@ -131,7 +131,7 @@ class TreeMap {
                 .attr("y", function(d){ return d.y0 + (d.y1 - d.y0) / 2})
                 .text(function(d){ return d.data.key })
                 .attr('font-size', d => {
-                    return d.depth === 1 ? '32px' : '18px';
+                    return d.depth === 1 ? '36px' : '18px';
                 })
                 .attr('fill', 'white')
                 .attr('opacity', d => {
