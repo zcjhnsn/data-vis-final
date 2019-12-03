@@ -1,16 +1,19 @@
 # data-vis-final
 
-## OverView
+## Overview
 <p>
 The primary goal of this visualizaiton is to find patterns and trends of crash fatalities. Using this visualization you 
 can see multiple aspects of the National Highways Data in an easy to see and understand way.
 
+When first visited, the site displays a heatmap of the United States with the number of fatalities for a given year. The hue of the state shows the relative number of fatal crashes for that state. Obviously, the states with a larger population have more fatal accidents than states with lower population. When a state is selected, the location of each fatality is displayed. Population centers and major highways are made easily visible due to the plotted points. While the US map shows the location and density of fatal accidents, the treemap shows trends for time of the year (month, day, and hour) and the parallel set displays their causes (weather, drunk driving, etc).
 ****************
 *************
 Say stuff about the heat map and how as you navigate through the page you can drill down into the specifics of the trends
 this is done using not only the map of the US but also the Treemap and Parallel Sets.
 ******
 *******
+
+    
 </p>
 
 ## Code Analysis
@@ -26,7 +29,7 @@ this is done using not only the map of the US but also the Treemap and Parallel 
 
 ### Parallel Sets Class-
 <p>
-    <p style="color:red;">Zac fill in...</p>
+    The parellel sets class uses the library <a href="https://github.com/jasondavies/d3-parsets">d3.parsets</a>. It was not originally written for d3v5 so some tweaking was involved to comply with that version of d3. It is the same library used for the Titanic visualization found <a href="https://www.jasondavies.com/parallel-sets/">here</a>
 </p>
 
 ### ToolTip Class-
