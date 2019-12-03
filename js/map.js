@@ -223,7 +223,7 @@ class StateMap {
         let g = map.append('g')
             .classed('states', true)
         ;
-        d3.json("/data/us.json")
+        d3.json("us.json")
             .then((us) => {
                 g.selectAll("path")
                     .data(topojson.feature(us, us.objects.states).features)
