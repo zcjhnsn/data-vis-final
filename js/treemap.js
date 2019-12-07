@@ -18,7 +18,7 @@ class TreeMap {
 
     drawTreeMap(data, state) {
         this.clearTreemap();
-        document.getElementById('tmapHeading').innerHTML = `Date and Times of all Fatalities for ${codes['State'][state]}`;
+        document.getElementById('tmapHeading').innerHTML = `Day and Month of all Fatalities for ${codes['State'][state]}`;
         let fatals = 0;
         data.forEach(function (d) {
             d['FATALS'] = +d.FATALS;
