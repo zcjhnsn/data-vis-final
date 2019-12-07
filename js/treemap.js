@@ -29,16 +29,14 @@ class TreeMap {
             d['weather'] = codes['WEATHER'][+d.WEATHER];
             fatals += +d.FATALS;
         });
-
-        let nest = d3.nest()
+        let nest;
+        if (data.length > 100)
+            nest = d3.nest()
             .key(function (d) {
                 return d.month;
             })
             .key(function (d) {
                 return d.day_week;
-            })
-            .key(function (d) {
-                return d.HOUR;
             })
             //.rollup(function(leaves) { return {"length": leaves.length, "total_fatal": d3.sum(leaves, function(d) {return parseInt(d.FATALS);})} })
             // .rollup(function (d) {
@@ -51,6 +49,29 @@ class TreeMap {
                     return value.FATALS;
                 })
             });
+        else
+            nest = d3.nest()
+                .key(function (d) {
+                    return d.month;
+                })
+                .key(function (d) {
+                    return d.day_week;
+                })
+                .key(function (d) {
+                    return d.HOUR
+                })
+                //.rollup(function(leaves) { return {"length": leaves.length, "total_fatal": d3.sum(leaves, function(d) {return parseInt(d.FATALS);})} })
+                // .rollup(function (d) {
+                //     return d3.sum(d, function (d) {
+                //         return d.FATALS;
+                //     });
+                //})
+                .rollup(function (values) {
+                    return d3.sum(values, function (value) {
+                        return value.FATALS;
+                    })
+                });
+
 
         let colorScale = d3.scaleSequential()
             .domain([0, fatals/12])
@@ -111,18 +132,19 @@ class TreeMap {
                     return opacity(d.depth)
                 })
             ;
-            map.selectAll('text')
-                .data(root.leaves())
-                .enter()
-                .append('text')
-                .attr("x", function(d){ return d.x0+5})
-                .attr("y", function(d){ return d.y0+20})
-                .text(function (d) {
-                    return d.data.key > 12 ? d.data.key - 12 + ' PM' : d.data.key + ' AM';
-                })
-                .attr('font-size', '10px')
-                .attr('opacity', d => {return opacity(d.depth)})
-        ;
+            if (data.length < 100)
+               map.selectAll('text')
+                   .data(root.leaves())
+                   .enter()
+                   .append('text')
+                   .attr("x", function(d){ return d.x0+5})
+                   .attr("y", function(d){ return d.y0+20})
+                   .text(function (d) {
+                       return d.data.key > 12 ? d.data.key - 12 + ' PM' : d.data.key + ' AM';
+                   })
+                   .attr('font-size', '10px')
+                   .attr('opacity', d => {return opacity(d.depth)})
+            ;
             map.selectAll("titles")
                 .data(root.descendants().filter(function(d){return d.depth === 1 || d.depth === 2}))
                 .enter()

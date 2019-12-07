@@ -12,6 +12,7 @@ class StateMap {
             .scale(1200)
             .translate([this.width / 2, this.height / 2]);
         this.tooltip = tooltip;
+        this.zoomed = null;
     }
 
     /**
@@ -156,6 +157,22 @@ class StateMap {
             .domain([d3.min(fatalities), d3.max(fatalities)])
             .interpolator(d3.interpolateReds);
 
+        if (this.zoomed !== null) {
+            d3.select('#map')
+                .selectAll('g')
+                .selectAll('circle')
+                .remove()
+            ;
+            let path = d3.geoPath().projection(this.projection);
+            let bounds = path.bounds(this.zoomed),
+                dx = bounds[1][0] - bounds[0][0],
+                dy = bounds[1][1] - bounds[0][1],
+                x = (bounds[0][0] + bounds[1][0]) / 2,
+                y = (bounds[0][1] + bounds[1][1]) / 2,
+                scale = .9 / Math.max(dx / this.width, dy / this.height),
+                translate = [this.width / 2 - scale * x, this.height / 2 - scale * y];
+            this.drawPoints(this.zoomed.id, scale, translate);
+        }
         d3.select('.states')
             .selectAll('path')
             .attr("fill", function(d) { return colorScale(states[`s${parseInt(d.id)}`]); })
@@ -219,7 +236,7 @@ class StateMap {
             .attr("class", "background")
             .attr("width", width)
             .attr("height", height)
-            .on("click", reset);
+            .on("click", _this.reset);
         let g = map.append('g')
             .classed('states', true)
         ;
@@ -236,7 +253,7 @@ class StateMap {
                         return `s${parseInt(d.id)}`
                     })
                     .attr("d", path)
-                    .on('click', zoom)
+                    .on('click', _this.zoom)
                     .on('mouseover', (d) => {
                         this.tooltip.mouseover(states[`s${parseInt(d.id)}`])
                     })
@@ -258,9 +275,9 @@ class StateMap {
                 ;
             });
 
-        function zoom(d) {
-            if (active.node() === this) return reset();
-
+        _this.zoom = function(d) {
+            if (active.node() === this) return _this.reset();
+            _this.zoomed = d;
             active.classed("active", false);
             active = d3.select(this).classed("active", true);
 
@@ -277,7 +294,8 @@ class StateMap {
                 .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
         }
 
-        function reset() {
+        _this.reset = function() {
+            _this.zoomed = null;
             let svg = d3.select('#map');
             svg.selectAll('g')
                 .selectAll('circle')
