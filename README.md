@@ -23,7 +23,7 @@ When first visited, the site displays a heatmap of the United States with the nu
 
 ### Parallel Sets Class-
 <p>
-    The parellel sets class uses the library <a href="https://github.com/jasondavies/d3-parsets">d3.parsets</a>. It was not originally written for d3v5 so some tweaking was involved to comply with that version of d3. It is the same library used for the Titanic visualization found <a href="https://www.jasondavies.com/parallel-sets/">here</a>.
+    The parellel sets class uses the library <a href="https://github.com/jasondavies/d3-parsets">d3.parsets</a>. It was not originally written for d3 v5 so some tweaking was involved to comply with that version of d3. It is the same library used for the Titanic visualization found <a href="https://www.jasondavies.com/parallel-sets/">here</a>.
 </p>
 
 ### ToolTip Class-
