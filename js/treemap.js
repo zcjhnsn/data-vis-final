@@ -13,6 +13,13 @@ class TreeMap {
             .selectAll('text')
             .remove()
         ;
+        d3.selectAll('#tmap-legend')
+            .remove()
+        ;
+        d3.selectAll('#spacer')
+            .remove()
+        ;
+
         document.getElementById('tmapHeading').innerHTML = ''
     }
 
@@ -164,6 +171,10 @@ class TreeMap {
     }
 
     drawLegend() {
+        d3.select('#treeMap')
+            .selectAll('#tmap-legend')
+            .remove()
+        ;
         var sizes = [40, 30, 20, 10]
         var xs = [0, 42, 74, 96, 108]
         var ys = [0, 40, 70, 90]
@@ -172,11 +183,22 @@ class TreeMap {
             .domain([0, 4])
             .interpolator(d3.interpolateOrRd);
 
-        var width = 140, height = 150
+        var width = 140, height = 150;
 
-        var spacer = d3.select('#tmap').append('svg').attr('width', 10).attr('height', 10).attr('fill', 'black');
+        var spacer = d3.select('#tmap')
+            .append('svg')
+            .attr('width', 10)
+            .attr('height', 10)
+            .attr('fill', 'black')
+            .attr('id', 'spacer')
+        ;
 
-        var svg = d3.select('#tmap').append('svg').attr('width', width).attr('height', height);
+        var svg = d3.select('#tmap')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('id', 'tmap-legend')
+        ;
 
 
 
