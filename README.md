@@ -5,13 +5,7 @@
 The primary goal of this visualizaiton is to find patterns and trends of crash fatalities. Using this visualization you 
 can see multiple aspects of the National Highways Data in an easy to see and understand way.
 
-When first visited, the site displays a heatmap of the United States with the number of fatalities for a given year. The hue of the state shows the relative number of fatal crashes for that state. Obviously, the states with a larger population have more fatal accidents than states with lower population. When a state is selected, the location of each fatality is displayed. Population centers and major highways are made easily visible due to the plotted points. While the US map shows the location and density of fatal accidents, the treemap shows trends for time of the year (month, day, and hour) and the parallel set displays their causes (weather, drunk driving, etc).
-****************
-*************
-Say stuff about the heat map and how as you navigate through the page you can drill down into the specifics of the trends
-this is done using not only the map of the US but also the Treemap and Parallel Sets.
-******
-*******
+When first visited, the site displays a heatmap of the United States with the number of fatalities for a given year. The hue of the state shows the relative number of fatal crashes for that state. Obviously, the states with a larger population have more fatal accidents than states with lower population. When a state is selected, the location of each fatality is displayed. Population centers and major highways are made easily visible due to the plotted points. While the US map shows the location and density of fatal accidents, the treemap shows trends for time of the year (month, day, and hour) and the parallel set displays their causes (weather, drunk driving, etc)
 
     
 </p>
