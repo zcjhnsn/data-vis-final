@@ -10,8 +10,8 @@
 </head>
 
 <body>
-<div >
- <section id="spinner"></section>
+<div>
+    <section id="spinner"></section>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <h1 class="nav-item">US Crash Statistics (1994-2017)</h1>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,14 +26,6 @@
                 <option selected>2017</option>
             </select>
         </div>
-        <!--<div class="collapse navbar-collapse" id="navbarNavAltMarkup">-->
-            <!--<div class="navbar-nav">-->
-                <!--<h2 class="nav-item" >Two And A Half Beards</h2>-->
-                <!--<h2 class="nav-item " >Paxton Alexander</h2>-->
-                <!--<h2 class="nav-item" >Brady Bodily</h2>-->
-                <!--<h2 class="nav-item" >Zac Johnson</h2>-->
-            <!--</div>-->
-        <!--</div>-->
     </nav>
     <div >
         <h3 id="national-total" class="text-center"></h3>
@@ -50,7 +42,8 @@
         </span>
         <svg id="map" class="mt-3"></svg>
         <h6>Geographic locations not available before 2001</h6>
-   </div>
+        <h5>Click a state to zoom in. Click again to zoom out.</h5>
+    </div>
 
     <div class="text-center  mt-3 align-middle" id="tmap" >
 
@@ -61,23 +54,28 @@
 
     </div>
 
-    <div class=" mb-3 mt-3" id="about">
-        <h4> <a href="https://zcjhnsn.github.io/data-vis-final/process.md">Download Process.md</a> </h4>
-        <h4> <a href="https://github.com/zcjhnsn/data-vis-final/blob/master/process.md">View Process.md</a> </h4>
-        <h4> <a href="https://github.com/zcjhnsn/data-vis-final/archive/master.zip" download> Download Repository </a> </h4>
-        <h4> <a href="https://github.com/zcjhnsn/data-vis-final"> View Repository </a> </h4>
-
-
+    <div class="text-center align-middle mb-3 mt-3" id="parsets">
+        <h3 id="parsetHeading"></h3>
+    </div>
+    <div class=" mt-3" id="about">
         <h3 style="color: black; text-align: center;">Project Screen Cast</h3>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/zRr8s84guPQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <h4 style="color:black">Process.md <a href="https://zcjhnsn.github.io/data-vis-final/process.md"><small>Download</small></a> <a href="https://github.com/zcjhnsn/data-vis-final/blob/master/process.md"><small>View</small></a> </h4>
+        <h4 style="color:black">Repository<a href="https://github.com/zcjhnsn/data-vis-final/archive/master.zip" download> <small> Download </small> </a> <a href="https://github.com/zcjhnsn/data-vis-final"><small>View</small> </a> </h4>
     </div>
-    <div class="text-center align-middle mb-3 mt-3" id="parsets">
-    <h3 id="parsetHeading"></h3>
-</div>
+
 
 
 </div>
-
+    <footer class="footer">
+        <div class="container">
+            <p>Two And A Half Beards:
+            Paxton Alexander,
+            Brady Bodily,
+            Zac Johnson
+            </p>
+        </div>
+    </footer>
 <script>
     let years = [1994, 1995, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2006, 2007, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017];
 

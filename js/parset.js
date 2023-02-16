@@ -2,7 +2,7 @@ class Parset {
     constructor(data) {
         this.data = data;
         this.chart = d3.parsets()
-            .dimensions(["Drunk Drivers","Vehicles Involved", "Accident Type", "People Involved", 'FATALS'])
+            .dimensions(["Drunk Drivers","Vehicles Involved", "Accident Type", "People Involved", 'Fatalities'])
         ;
 
         this.width = 960;
@@ -25,7 +25,8 @@ class Parset {
 
     drawParset(data) {
         data.forEach(d => {
-            d['Accident Type'] = codes['Accident Type'][+d['Accident Type']]
+            d['Accident Type'] = codes['Accident'][+d['Accident']];
+            d['Fatalities'] = +d['FATALS'];
         });
         document.getElementById('parsetHeading').innerHTML = 'Additional Information about each fatality';
         this.parset.datum(data)

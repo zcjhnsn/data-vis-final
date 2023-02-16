@@ -24,9 +24,9 @@ function init() {
     let tooltip = new Tooltip();
 
     Promise.all([
-        d3.csv("data/fatality-rate.csv"),
-        d3.csv("data/fatalities-per-100-mvt.csv"),
-        d3.csv('data/accident2.csv', function (d) {
+        d3.csv("fatality-rate.csv"),
+        d3.csv("fatalities-per-100-mvt.csv"),
+        d3.csv('accident2.csv', function (d) {
             d.id = `s${parseInt(d.STATE)}`;
             d.fatal = +d.FATALS;
 
